@@ -6,12 +6,14 @@ namespace ConsoleApp1
     {
         static async Task Main(string[] args)
         {
+            var sw = new Stopwatch();
+            sw.Start();
+
+            //Demo 2 task when all
             var demo2 = new Demo2();
             await demo2.Run();
 
-            ////---
-            //var a = new Stopwatch();
-            //a.Start();
+            ////Demo 1
             //ShowThreadInformation("Main");
 
             //var coffeeTask = await TakeCoffeeAsync();
@@ -24,8 +26,9 @@ namespace ConsoleApp1
 
             //var coffee = coffeeTask;
             //Console.WriteLine(coffee);
-            //a.Stop();
-            //Console.WriteLine("Enjoy your coffee! " + a.ElapsedMilliseconds);
+
+            sw.Stop();
+            Console.WriteLine("ElapsedMilliseconds: " + sw.ElapsedMilliseconds);
 
             Console.ReadKey();
         }
@@ -41,8 +44,6 @@ namespace ConsoleApp1
             ShowThreadInformation("TakeCoffeeAsync");
             return "Here's your coffee.";
         }
-
-
 
         private static void ShowThreadInformation(string name)
         {

@@ -1,103 +1,40 @@
-﻿using System.Diagnostics;
-using System.Xml.Linq;
-
-namespace ConsoleApp1
+﻿namespace ConsoleApp1
 {
     public class Demo2
     {
+        public async Task Task1()
+        {
+            Console.WriteLine("Task1");
+            await Task.Delay(1009);
+            ShowThreadInformation("Task1");
+            Console.WriteLine("Task1 is ready!");
+        }
+
+        public async Task Task2()
+        {
+            Console.WriteLine("Task2");
+            await Task.Delay(1000);
+            ShowThreadInformation("Task2");
+            Console.WriteLine("Task2 is ready!");
+        }
+
+        public async Task Task3()
+        {
+            Console.WriteLine("Task3");
+            await Task.Delay(1000);
+            ShowThreadInformation("Task3");
+            Console.WriteLine("Task3 is ready!");
+        }
+
         public async Task Run()
         {
-            Stopwatch a = new Stopwatch();
-            a.Start();
-            var meal = new Meal();
-            Console.WriteLine("Preparing the meal...");
+            var t1 = Task1();
+            var t2 = Task2();
+            var t3 = Task3();
 
-            await meal.EatMealAsync();
-            a.Stop();
-            ShowThreadInformation("Main");
-            Console.WriteLine("Finished the meal. Goodbye! " + a.ElapsedMilliseconds);
-        }
+            await Task.WhenAll(t1, t2, t3);
 
-        private static void ShowThreadInformation(string name)
-        {
-            var thread = Thread.CurrentThread;
-            var msg = $"{name} thread information\n" +
-                      $"   Background: {thread.IsBackground}\n" +
-                      $"   Thread Pool: {thread.IsThreadPoolThread}\n" +
-                      $"   Thread ID: {thread.ManagedThreadId}\n";
-            Console.WriteLine(msg);
-        }
-    }
-
-    public class Meal
-    {
-        public async Task PrepareRiceAsync()
-        {
-            ShowThreadInformation("PrepareRiceAsync");
-            Console.WriteLine("Cooking rice...");
-            await Task.Delay(2000); // Assume cooking rice takes 2 seconds
-            
-            Console.WriteLine("Rice is ready!");
-        }
-
-        public async Task PrepareMeatAsync()
-        {
-            ShowThreadInformation("PrepareMeatAsync");
-
-            Console.WriteLine("Cooking meat...");
-            await Task.Delay(2000); // Assume cooking meat takes 3 seconds
-            Console.WriteLine("Meat is ready!");
-        }
-
-        public async Task PrepareSoupAsync()
-        {
-            ShowThreadInformation("PrepareSoupAsync");
-
-            Console.WriteLine("Cooking soup...");
-            await Task.Delay(2000); // Assume cooking soup takes 2.5 seconds
-            Console.WriteLine("Soup is ready!");
-        }
-
-        public async Task GetBowlAsync()
-        {
-            Console.WriteLine("Getting a bowl...");
-            await Task.Delay(2000); // Assume getting a bowl takes 1 second
-            Console.WriteLine("Got a bowl!");
-        }
-
-        public async Task GetChopsticksAsync()
-        {
-            Console.WriteLine("Getting chopsticks..." + Thread.CurrentThread.ManagedThreadId);
-            
-            await Task.Delay(1500); // Assume getting chopsticks takes 1.5 seconds
-            var thread = Thread.CurrentThread;
-            var msg = $"GetChopsticksAsync thread information\n" +
-                      $"   Background: {thread.IsBackground}\n" +
-                      $"   Thread Pool: {thread.IsThreadPoolThread}\n" +
-                      $"   Thread ID: {thread.ManagedThreadId}\n";
-            Console.WriteLine(msg);
-            Console.WriteLine("Got chopsticks!" + Thread.CurrentThread.ManagedThreadId);
-        }
-
-        public async Task EatMealAsync()
-        {
-            var t1 = PrepareRiceAsync();
-            var t2 = PrepareMeatAsync();
-            var t3 = PrepareSoupAsync();
-            var t4 = GetBowlAsync();
-            var t5 = GetChopsticksAsync();
-
-            await Task.WhenAll(t1, t2, t3, t4, t5);
-
-            //await t1;
-            //await t2;
-            //await t3;
-            //await t4;
-            //await t5;
-
-            ShowThreadInformation("EatMealAsync");
-
-            Console.WriteLine("Meal is ready. Let's eat!");
+            Console.WriteLine("Completed!!!");
         }
 
         private static void ShowThreadInformation(string name)
